@@ -28,4 +28,11 @@ jobs:
 
     - name: Scan with FFUF
       run: | 
-        ~/go/bin/ffuf -w SecLists-master/Discovery/Web-Content/directory-list-1.0.txt -u http://localhost:8888/FUZZ
+        ~/go/bin/ffuf -w SecLists-master/Discovery/Web-Content/directory-list-1.0.txt -u http://localhost:8888/FUZZ -o result.json
+
+    - name: Upload FFUF Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: ffuf_result
+        path: result.json
+        retention-days: 14
