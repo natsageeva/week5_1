@@ -1,0 +1,31 @@
+
+name: Fuzzing Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Golang
+      uses: actions/setup-go@v4
+
+    - name: Install FFUF
+      run: | 
+        go install github.com/ffuf/ffuf/v2@latest
+
+    - name: Download SecList 
+      run: |
+        wget -c https://github.com/danielmiessler/SecLists/archive/master.zip -O SecList.zip \
+        && unzip SecList.zip \
+        && rm -f SecList.zip
+
+    - name: "Set up Docker-Compose"
+      uses: hoverkraft-tech/compose-action@v2.0.1
+
+    
